@@ -1,119 +1,198 @@
 package com.example.jaadu;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.speech.tts.TextToSpeech;
+import android.view.Gravity;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.PermissionChecker;
+
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int RECORD_AUDIO_PERMISSION = 1;
-    private SpeechRecognizer speechRecognizer;
-    private Intent speechRecognizerIntent;
-    private TextView speechTextView;
+    private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final int CALL_PERMISSION_REQUEST_CODE = 2;
 
-    @SuppressLint("MissingInflatedId")
+    private ImageView micIV;
+    private TextView userInput;
+    private TextView jaaduResponse;
+    private LinearLayout textContainer;
+
+    private TextToSpeech textToSpeech;
+
+    private TaskExecution tsk = new TaskExecution(this);
+    private Responcegeneration rsp = new Responcegeneration();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        speechTextView = findViewById(R.id.speechTextView);
+        micIV = findViewById(R.id.mic_speak_iv);
+        textContainer = findViewById(R.id.textContainer);
+        micIV.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.mic_disabled_color));
 
-        Button startButton = findViewById(R.id.startButton);
-        startButton.setOnClickListener(new View.OnClickListener() {
+
+        micIV.setOnClickListener(view -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                checkAudioPermission();
+            }
+            // changing the color of the mic icon, which indicates that it is currently listening
+            micIV.setColorFilter(ContextCompat.getColor(this, R.color.mic_enabled_color)); // #FF0E87E7
+            startSpeechToText();
+        });
+
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
-            public void onClick(View v) {
-                speechTextView.setText("Listening");
-                startSpeechRecognition();
+            public void onInit(int i) {
+                // If no error is found, set the language of speech to UK
+                if (i != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.UK);
+                }
+            }
+        });
+    }
 
+    private void startSpeechToText() {
+        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        );
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle bundle) {
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+            }
+
+            @Override
+            public void onRmsChanged(float v) {
+            }
+
+            @Override
+            public void onBufferReceived(byte[] bytes) {
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+                // changing the color of the mic icon to gray to indicate it is not listening
+                micIV.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.mic_disabled_color)); // #FF6D6A6A
+            }
+
+            @Override
+            public void onError(int i) {
+            }
+
+
+            @Override
+            public void onResults(Bundle bundle) {
+                ArrayList<String> result = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                if (result != null) {
+
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, // Width
+                            LinearLayout.LayoutParams.WRAP_CONTENT   // Height
+                    );
+                    layoutParams.setMargins(0,30,0,10);
+                    // attaching the output to our text view
+                    jaaduResponse = new TextView(MainActivity.this);
+                    userInput = new TextView(MainActivity.this);
+
+                    userInput.setLayoutParams(layoutParams);
+                    userInput.setGravity(Gravity.END);
+                    userInput.setTextColor(Color.WHITE);
+                    userInput.setBackgroundResource(R.drawable.user_bubble);
+                    userInput.setPadding(29,29,29,29);
+                    userInput.setText("YOU: " + result.get(0));
+                    textContainer.addView(userInput);
+
+
+                    String response = rsp.responce(result.get(0));
+                    textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
+                    jaaduResponse.setText("JAADU: " + response);
+
+                    jaaduResponse.setLayoutParams(layoutParams);
+                    jaaduResponse.setTextColor(Color.BLACK);
+                    jaaduResponse.setBackgroundResource(R.drawable.jaadu_bubble);
+                    jaaduResponse.setPadding(29,29,29,29);
+
+
+
+                    textContainer.addView(jaaduResponse);
+                    tsk.performTasks(result.get(0));
+                }
+            }
+
+            @Override
+            public void onPartialResults(Bundle bundle) {
+            }
+
+            @Override
+            public void onEvent(int i, Bundle bundle) {
             }
         });
 
-        checkPermissions();
+        speechRecognizer.startListening(speechRecognizerIntent);
     }
 
-    private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.RECORD_AUDIO}, RECORD_AUDIO_PERMISSION);
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkAudioPermission() {
+        int microphonePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+        int callPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
+
+        if (microphonePermission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSION_REQUEST_CODE);
+        }
+
+        if (callPermission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, CALL_PERMISSION_REQUEST_CODE);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == RECORD_AUDIO_PERMISSION) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, you can now start speech recognition
+                // Microphone permission granted, you can now use the microphone
+                // If needed, you can add more code here to handle the permission result
             } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+                // Microphone permission denied, you can inform the user or take necessary action
+                Toast.makeText(this, "Microphone permission denied", Toast.LENGTH_SHORT).show();
             }
-        }
-    }
-
-    private void startSpeechRecognition() {
-        if (speechRecognizer == null) {
-            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-            speechRecognizer.setRecognitionListener(new RecognitionListener() {
-                @Override
-                public void onReadyForSpeech(Bundle params) {}
-
-                @Override
-                public void onBeginningOfSpeech() {}
-
-                @Override
-                public void onRmsChanged(float rmsdB) {}
-
-                @Override
-                public void onBufferReceived(byte[] buffer) {}
-
-                @Override
-                public void onEndOfSpeech() {}
-
-                @Override
-                public void onError(int error) {
-                    String errorMessage = "Error in speech recognition";
-                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onResults(Bundle results) {
-                    ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                    if (matches != null && !matches.isEmpty()) {
-                        String recognizedSpeech = matches.get(0);
-                        speechTextView.setText(recognizedSpeech);
-                    }
-                }
-
-                @Override
-                public void onPartialResults(Bundle partialResults) {}
-
-                @Override
-                public void onEvent(int eventType, Bundle params) {}
-            });
-
-            speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US"); // Change to your desired language
-
-            speechRecognizer.startListening(speechRecognizerIntent);
+        } else if (requestCode == CALL_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Call permission granted, you can now make calls
+                // If needed, you can add more code here to handle the permission result
+            } else {
+                // Call permission denied, you can inform the user or take necessary action
+                Toast.makeText(this, "Call permission denied", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
