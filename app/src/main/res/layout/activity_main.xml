@@ -4,27 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bgimg2"
+    android:background="@color/black"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="510dp"
+    <TextView
+        android:id="@+id/jaaduResponce"
+        android:layout_width="314dp"
+        android:layout_height="62dp"
+        android:fontFamily="monospace"
+        android:gravity="left"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/mic_speak_iv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.329"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348">
+        app:layout_constraintVertical_bias="0.232" />
 
-        <LinearLayout
-            android:id="@+id/textContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="500dp"
-            android:orientation="vertical" />
-    </ScrollView>
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/movement"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="-353dp" />
+
+    <TextView
+        android:id="@+id/userInput"
+        android:layout_width="281dp"
+        android:layout_height="73dp"
+        android:text=""
+        android:textColor="@color/white"
+        android:gravity="right"
+        app:layout_constraintBottom_toTopOf="@+id/mic_speak_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/jaaduResponce"
+        app:layout_constraintVertical_bias="0.816" />
 
     <ImageView
         android:id="@+id/mic_speak_iv"

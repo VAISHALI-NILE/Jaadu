@@ -1,6 +1,7 @@
 package com.example.jaadu;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -24,8 +25,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import pl.droidsonroids.gif.GifDrawable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,21 +39,25 @@ public class MainActivity extends AppCompatActivity {
     private ImageView micIV;
     private TextView userInput;
     private TextView jaaduResponse;
-    private LinearLayout textContainer;
 
     private TextToSpeech textToSpeech;
-
+    private GifDrawable gif;
     private TaskExecution tsk = new TaskExecution(this);
     private Responcegeneration rsp = new Responcegeneration();
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         micIV = findViewById(R.id.mic_speak_iv);
-        textContainer = findViewById(R.id.textContainer);
+
         micIV.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.mic_disabled_color));
+        jaaduResponse = new TextView(MainActivity.this);
+        userInput = findViewById(R.id.userInput);
+        jaaduResponse = findViewById(R.id.jaaduResponce);
+
 
 
         micIV.setOnClickListener(view -> {
@@ -67,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 // If no error is found, set the language of speech to UK
                 if (i != TextToSpeech.ERROR) {
                     textToSpeech.setLanguage(Locale.UK);
+
                 }
             }
         });
@@ -114,36 +123,14 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> result = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 if (result != null) {
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, // Width
-                            LinearLayout.LayoutParams.WRAP_CONTENT   // Height
-                    );
-                    layoutParams.setMargins(0,30,0,10);
-                    // attaching the output to our text view
-                    jaaduResponse = new TextView(MainActivity.this);
-                    userInput = new TextView(MainActivity.this);
-
-                    userInput.setLayoutParams(layoutParams);
-                    userInput.setGravity(Gravity.END);
-                    userInput.setTextColor(Color.WHITE);
-                    userInput.setBackgroundResource(R.drawable.user_bubble);
-                    userInput.setPadding(29,29,29,29);
-                    userInput.setText("YOU: " + result.get(0));
-                    textContainer.addView(userInput);
-
+                    //userInput.setText(result.get(0));
 
                     String response = rsp.responce(result.get(0));
                     textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
-                    jaaduResponse.setText("JAADU: " + response);
+                    jaaduResponse.setAlpha(0f);
+                    jaaduResponse.setText(response);
+                    jaaduResponse.animate().alpha(1f).setDuration(1500);
 
-                    jaaduResponse.setLayoutParams(layoutParams);
-                    jaaduResponse.setTextColor(Color.BLACK);
-                    jaaduResponse.setBackgroundResource(R.drawable.jaadu_bubble);
-                    jaaduResponse.setPadding(29,29,29,29);
-
-
-
-                    textContainer.addView(jaaduResponse);
                     tsk.performTasks(result.get(0));
                 }
             }
