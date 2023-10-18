@@ -30,8 +30,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import pl.droidsonroids.gif.GifDrawable;
-import ai.kitt.snowboy.HotwordDetector;
-import ai.kitt.snowboy.HotwordDetectorCallback;
+
 
 public class MainActivity extends AppCompatActivity {
 
