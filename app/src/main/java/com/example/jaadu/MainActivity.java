@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import pl.droidsonroids.gif.GifDrawable;
+import ai.kitt.snowboy.HotwordDetector;
+import ai.kitt.snowboy.HotwordDetectorCallback;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextToSpeech textToSpeech;
     private GifDrawable gif;
+    String response ;
     private TaskExecution tsk = new TaskExecution(this);
     private Responcegeneration rsp = new Responcegeneration();
 
@@ -57,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
         jaaduResponse = new TextView(MainActivity.this);
         userInput = findViewById(R.id.userInput);
         jaaduResponse = findViewById(R.id.jaaduResponce);
-
-
 
         micIV.setOnClickListener(view -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -79,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        response = "Welcome Human..!";
+        textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
+        jaaduResponse.setText(response);
     }
 
     private void startSpeechToText() {
@@ -125,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
                     //userInput.setText(result.get(0));
 
-                    String response = rsp.responce(result.get(0));
+                    response = rsp.responce(result.get(0));
                     textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
                     jaaduResponse.setAlpha(0f);
                     jaaduResponse.setText(response);

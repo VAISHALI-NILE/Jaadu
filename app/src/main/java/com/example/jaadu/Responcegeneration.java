@@ -20,6 +20,9 @@ public class Responcegeneration {
         if (input.contains("open spotify")) {
             return "opening spotify";
         }
+        if (input.contains("open calendar")) {
+            return "opening calendar";
+        }
         if (input.contains("bye"))
         {
             return "Bye bye hope to see u soon!";

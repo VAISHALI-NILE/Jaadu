@@ -22,6 +22,10 @@ public class TaskExecution {
         if (task.contains("open spotify")) {
             openSpotify();
         }
+        if(task.contains("open calendar"))
+        {
+            openCalender();
+        }
         if (task.contains("call")) {
             String contactName = task.replace("call", "").trim();
             call(contactName);
@@ -52,6 +56,17 @@ public class TaskExecution {
         String youtubeUrl = "https://www.youtube.com/";
         open(youtubePackage, youtubeUrl);
     }
+
+    public void openCalender()
+    {
+        String calenderPackage ="com.android.calendar";
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(calenderPackage);
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+    }
+
 
     public void open(String packageName, String url) {
         if (isAppInstalled(packageName)) {
