@@ -2,6 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="mic_disabled_color">#3E1445</color>
-    <color name="mic_enabled_color">#801093</color>
+    <color name="mic_disabled_color">#FDFDFD</color>
+    <color name="mic_enabled_color">#736B75</color>
 </resources>

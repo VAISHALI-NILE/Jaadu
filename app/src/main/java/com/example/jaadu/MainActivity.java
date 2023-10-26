@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -30,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import pl.droidsonroids.gif.GifDrawable;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,8 +45,10 @@ public class MainActivity extends AppCompatActivity {
     private TextToSpeech textToSpeech;
     private GifDrawable gif;
     String response ;
+    private VideoView bgVideo;
     private TaskExecution tsk = new TaskExecution(this);
     private Responcegeneration rsp = new Responcegeneration();
+    public static boolean calling_flag = false;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -60,11 +63,14 @@ public class MainActivity extends AppCompatActivity {
         userInput = findViewById(R.id.userInput);
         jaaduResponse = findViewById(R.id.jaaduResponce);
 
+//        bgVideo = findViewById(R.id.videoView2);
+//        bgVideo.setVideoPath("android.resource://"+getPackageName()+"/" + R.raw.movement2);
+//        bgVideo.start();
+
         micIV.setOnClickListener(view -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 checkAudioPermission();
             }
-            // changing the color of the mic icon, which indicates that it is currently listening
             micIV.setColorFilter(ContextCompat.getColor(this, R.color.mic_enabled_color)); // #FF0E87E7
             startSpeechToText();
         });
@@ -72,16 +78,17 @@ public class MainActivity extends AppCompatActivity {
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int i) {
-                // If no error is found, set the language of speech to UK
                 if (i != TextToSpeech.ERROR) {
                     textToSpeech.setLanguage(Locale.UK);
-
                 }
             }
         });
         response = "Welcome Human..!";
-        textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
         jaaduResponse.setText(response);
+        textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
+
+
+
     }
 
     private void startSpeechToText() {
@@ -112,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onEndOfSpeech() {
-                // changing the color of the mic icon to gray to indicate it is not listening
                 micIV.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.mic_disabled_color)); // #FF6D6A6A
             }
 
@@ -127,14 +133,14 @@ public class MainActivity extends AppCompatActivity {
                 if (result != null) {
 
                     //userInput.setText(result.get(0));
-
+                    tsk.performTasks(result.get(0));
                     response = rsp.responce(result.get(0));
                     textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
                     jaaduResponse.setAlpha(0f);
                     jaaduResponse.setText(response);
                     jaaduResponse.animate().alpha(1f).setDuration(1500);
 
-                    tsk.performTasks(result.get(0));
+
                 }
             }
 
@@ -169,18 +175,13 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Microphone permission granted, you can now use the microphone
-                // If needed, you can add more code here to handle the permission result
             } else {
-                // Microphone permission denied, you can inform the user or take necessary action
                 Toast.makeText(this, "Microphone permission denied", Toast.LENGTH_SHORT).show();
             }
         } else if (requestCode == CALL_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Call permission granted, you can now make calls
-                // If needed, you can add more code here to handle the permission result
+
             } else {
-                // Call permission denied, you can inform the user or take necessary action
                 Toast.makeText(this, "Call permission denied", Toast.LENGTH_SHORT).show();
             }
         }

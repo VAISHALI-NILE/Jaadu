@@ -1,14 +1,24 @@
 package com.example.jaadu;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TaskExecution {
     private Context context;
+    private Responcegeneration res = new Responcegeneration();
 
     public TaskExecution(Context context) {
         this.context = context;
@@ -22,27 +32,125 @@ public class TaskExecution {
         if (task.contains("open spotify")) {
             openSpotify();
         }
-        if(task.contains("open calendar"))
-        {
+        if (task.contains("open calendar")) {
             openCalender();
         }
         if (task.contains("call")) {
-            String contactName = task.replace("call", "").trim();
-            call(contactName);
+
+            String inputContactName = task.replace("call", "").trim().toLowerCase();
+            res.calling(null,inputContactName);
+
+            // Fetch and clean contact names
+            List<String> contactNames = fetchAndCleanContactNames();
+
+            // Compare the cleaned input contact name with cleaned contact names
+            if (findContactName(inputContactName, contactNames)) {
+                res.calling(inputContactName,null);
+                call(inputContactName);
+            } else {
+                Toast.makeText(context, "Contact not found: " + inputContactName, Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(task.contains("open your settings"))
+        {
+            Intent intent = new Intent(context,SettingsActivity.class);
+            context.startActivity(intent);
+        }
+    }
+    public List<String> fetchAndCleanContactNames() {
+        List<String> cleanedContactNames = new ArrayList<>();
+
+        String[] projection = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
+        String sortOrder = null;
+
+        Cursor cursor = context.getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                projection,
+                null,
+                null,
+                sortOrder
+        );
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                @SuppressLint("Range") String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String cleanedContactName = preprocessContactName(contactName);
+                cleanedContactNames.add(cleanedContactName);
+                Log.d("ContactNames", cleanedContactName);
+            }
+
+            cursor.close();
+        }
+
+        return cleanedContactNames;
+    }
+
+    private String preprocessContactName(String contactName) {
+        if (contactName == null) {
+            return "";
+        }
+
+        // Remove symbols and emojis
+        String cleanedName = contactName.replaceAll("[^a-zA-Z0-9\\s]", "");
+
+        // Convert to lowercase
+        cleanedName = cleanedName.toLowerCase();
+
+        return cleanedName;
+    }
+
+    public boolean findContactName(String inputContactName, @NonNull List<String> contactNames) {
+        // Clean the input contact name
+        String cleanedInputContactName = preprocessContactName(inputContactName);
+
+        // Compare the cleaned input contact name with cleaned contact names (case-insensitive)
+        for (String cleanedContactName : contactNames) {
+            if (cleanedContactName.equals(cleanedInputContactName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void call(String inputContactName) {
+        // Retrieve the original contact name from the contact list
+        String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ?";
+        String[] selectionArgs = {inputContactName};
+        String sortOrder = null;
+
+        Cursor cursor = context.getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null,
+                selection,
+                selectionArgs,
+                sortOrder
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int phoneNumberColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            String phoneNumber = cursor.getString(phoneNumberColumnIndex);
+            cursor.close();
+
+            if (phoneNumber != null && !phoneNumber.isEmpty()) {
+                Toast.makeText(context, "Phone number: " + phoneNumber, Toast.LENGTH_SHORT).show();
+                call2(phoneNumber);
+            } else {
+                Toast.makeText(context, "Phone number not found for " + inputContactName, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(context, "Contact not found: " + inputContactName, Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void call(String contactName) {
-        // Perform a contact lookup to get the phone number for the contact
-        String phoneNumber = getContactPhoneNumber(contactName);
 
-        if (phoneNumber != null) {
-            // Initiate the call
-            Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+
+    public void call2(String phoneNumber)
+    {
+
+            Uri number = Uri.parse("tel:" + phoneNumber);
+            Toast.makeText(context, "Contact "+phoneNumber+" found", Toast.LENGTH_SHORT).show();
+            Intent callIntent = new Intent(Intent.ACTION_CALL, number);
             context.startActivity(callIntent);
-        } else {
-            Toast.makeText(context, "Contact "+contactName+" not found", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void openSpotify() {
@@ -74,7 +182,6 @@ public class TaskExecution {
             intent.setPackage(packageName);
             context.startActivity(intent);
         } else {
-            // If the app is not installed, open in a web browser
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             context.startActivity(intent);
         }
@@ -86,10 +193,8 @@ public class TaskExecution {
         return intent != null;
     }
 
-    // Implement your contact lookup logic here
     private String getContactPhoneNumber(String contactName) {
-        // You should implement a method to look up the contact and retrieve the phone number
-        // This could involve querying the device's contact list or a custom database
+
         return null;
     }
 }

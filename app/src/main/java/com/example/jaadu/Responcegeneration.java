@@ -3,6 +3,8 @@ package com.example.jaadu;
 
 
 public class Responcegeneration {
+    public String ContactName = null;
+    public String inputcnt = null;
     public String responce(String input)
     {
         input = input.toLowerCase();
@@ -23,11 +25,29 @@ public class Responcegeneration {
         if (input.contains("open calendar")) {
             return "opening calendar";
         }
+        if(input.contains("open your settings"))
+        {
+            return "opening my settings";
+        }
         if (input.contains("bye"))
         {
             return "Bye bye hope to see u soon!";
         }
-
+        if(input.contains("call"))
+        {
+            if(ContactName != null){
+                return "Calling "+ContactName;
+            }
+            else
+            {
+                return "Contact not found";
+            }
+        }
         return "responce is not predefined";
+    }
+    public void calling(String c,String in)
+    {
+        ContactName = c;
+        inputcnt = in;
     }
 }

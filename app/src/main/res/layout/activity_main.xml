@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="#000000"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -20,7 +20,7 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/mic_speak_iv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.329"
+        app:layout_constraintHorizontal_bias="0.257"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.232" />
@@ -29,7 +29,7 @@
         android:id="@+id/gifImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/movement"
+        android:src="@drawable/finalbg"
         tools:layout_editor_absoluteX="-16dp"
         tools:layout_editor_absoluteY="-353dp" />
 
@@ -37,14 +37,15 @@
         android:id="@+id/userInput"
         android:layout_width="281dp"
         android:layout_height="73dp"
+        android:gravity="right"
         android:text=""
         android:textColor="@color/white"
-        android:gravity="right"
         app:layout_constraintBottom_toTopOf="@+id/mic_speak_iv"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.746"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jaaduResponce"
-        app:layout_constraintVertical_bias="0.816" />
+        app:layout_constraintVertical_bias="0.835" />
 
     <ImageView
         android:id="@+id/mic_speak_iv"
