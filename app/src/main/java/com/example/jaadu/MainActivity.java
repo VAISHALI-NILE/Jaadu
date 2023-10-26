@@ -80,13 +80,12 @@ public class MainActivity extends AppCompatActivity {
             public void onInit(int i) {
                 if (i != TextToSpeech.ERROR) {
                     textToSpeech.setLanguage(Locale.UK);
+                    String welcomeMessage = "Welcome Human!";
+                    textToSpeech.speak(welcomeMessage, TextToSpeech.QUEUE_FLUSH, null);
+                    jaaduResponse.setText(welcomeMessage);
                 }
             }
         });
-        response = "Welcome Human..!";
-        jaaduResponse.setText(response);
-        textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
-
 
 
     }
