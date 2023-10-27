@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         micIV = findViewById(R.id.mic_speak_iv);
 
         micIV.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.mic_disabled_color));
-        jaaduResponse = new TextView(MainActivity.this);
+//        jaaduResponse = new TextView(MainActivity.this);
         userInput = findViewById(R.id.userInput);
         jaaduResponse = findViewById(R.id.jaaduResponce);
 
@@ -86,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     private void startSpeechToText() {

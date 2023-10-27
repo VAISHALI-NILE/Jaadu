@@ -20,10 +20,10 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/mic_speak_iv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.257"
+        app:layout_constraintHorizontal_bias="0.36"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.232" />
+        app:layout_constraintVertical_bias="0.22" />
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageView"
