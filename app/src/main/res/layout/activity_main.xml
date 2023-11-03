@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/black"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -12,52 +12,44 @@
 
     <TextView
         android:id="@+id/jaaduResponce"
-        android:layout_width="314dp"
-        android:layout_height="62dp"
+        android:layout_width="291dp"
+        android:layout_height="75dp"
         android:fontFamily="monospace"
         android:gravity="left"
         android:text=""
         android:textColor="@color/white"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/mic_speak_iv"
+
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintHorizontal_bias="0.308"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22" />
+        app:layout_constraintVertical_bias="0.149" />
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/finalbg"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="-353dp" />
-
-    <TextView
-        android:id="@+id/userInput"
-        android:layout_width="281dp"
-        android:layout_height="73dp"
-        android:gravity="right"
-        android:text=""
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/mic_speak_iv"
+        android:layout_width="278dp"
+        android:layout_height="309dp"
+        android:src="@drawable/movement"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.746"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/jaaduResponce"
-        app:layout_constraintVertical_bias="0.835" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.473" />
 
     <ImageView
         android:id="@+id/mic_speak_iv"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="32dp"
+        android:layout_width="106dp"
+        android:layout_height="61dp"
         android:src="@drawable/mic_img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.892"
         app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

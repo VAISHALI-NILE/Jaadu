@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1065938727958",
+    "project_id": "jaadu-3eb43",
+    "storage_bucket": "jaadu-3eb43.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065938727958:android:8fa611315cb01fd64d3137",
+        "android_client_info": {
+          "package_name": "com.example.jaadu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqcjMDIRv_1ZyZl4onRBPMeppfZ1d5HtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

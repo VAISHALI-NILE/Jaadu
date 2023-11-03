@@ -15,6 +15,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,12 +56,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
 
         micIV = findViewById(R.id.mic_speak_iv);
 
         micIV.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.mic_disabled_color));
 //        jaaduResponse = new TextView(MainActivity.this);
-        userInput = findViewById(R.id.userInput);
+//        userInput = findViewById(R.id.userInput);
         jaaduResponse = findViewById(R.id.jaaduResponce);
 
 //        bgVideo = findViewById(R.id.videoView2);

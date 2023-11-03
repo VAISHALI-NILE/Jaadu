@@ -14,7 +14,9 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
         con = findViewById(R.id.continueButton);
         con.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -25,7 +27,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     }
     private void openMain(){
-        Intent intent = new Intent(this,LoginActivity.class);
+        Intent intent = new Intent(this,MainActivity.class);
         this.startActivity(intent);
     }
 }
