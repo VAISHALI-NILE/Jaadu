@@ -23,14 +23,15 @@
         android:src="@drawable/logo"
         app:layout_constraintBottom_toTopOf="@+id/button8"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/editText3"
-        android:layout_width="277dp"
-        android:layout_height="44dp"
+        android:layout_width="307dp"
+        android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_marginTop="56dp"
         android:background="#D3F0EAF1"
@@ -40,15 +41,15 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/button8"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.375" />
+        app:layout_constraintVertical_bias="0.222" />
 
     <EditText
         android:id="@+id/editText4"
-        android:layout_width="277dp"
-        android:layout_height="44dp"
+        android:layout_width="311dp"
+        android:layout_height="43dp"
         android:layout_gravity="center"
         android:layout_marginTop="29dp"
         android:layout_marginBottom="36dp"
@@ -60,25 +61,24 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/button8"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText3"
-        app:layout_constraintVertical_bias="0.333" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/button8"
-        android:layout_width="259dp"
-        android:layout_height="57dp"
+        android:layout_width="193dp"
+        android:layout_height="55dp"
         android:layout_marginTop="498dp"
         android:layout_marginBottom="378dp"
         android:text="Login"
         app:backgroundTint="#7E027F"
         app:layout_constraintBottom_toBottomOf="@+id/welcomeImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/welcomeImage"
-        app:layout_constraintVertical_bias="0.409" />
+        app:layout_constraintVertical_bias="0.305" />
 
     <TextView
         android:id="@+id/textView2"
@@ -104,11 +104,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Skip"
+        app:backgroundTint="#A971CE"
         app:layout_constraintBottom_toBottomOf="@+id/welcomeImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.915"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:layout_constraintVertical_bias="0.89" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="63dp"
+        android:layout_height="57dp"
+        app:layout_constraintBottom_toBottomOf="@+id/welcomeImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.767"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.338"
+        app:srcCompat="@drawable/googleimg" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="150dp"
+        android:layout_height="31dp"
+        android:text="LogIn using Google"
+        android:textColor="@color/white"
+        android:textSize="17dp"
+        app:layout_constraintBottom_toBottomOf="@+id/welcomeImage"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintHorizontal_bias="0.931"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.392" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
