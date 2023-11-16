@@ -35,6 +35,30 @@ public class TaskExecution {
         if (task.contains("open calendar")) {
             openCalender();
         }
+        if (task.contains("open calculator")) {
+            openCalculator();
+        }
+
+        if (task.contains("open contacts")) {
+            openContacts();
+        }
+        if (task.contains("open email")) {
+            openEmails();
+        }
+        if (task.contains("open music")) {
+            openMusic();
+        }
+        if (task.contains("open messages")) {
+            openMessages();
+        }
+        if (task.contains("open maps")) {
+            openMaps();
+        }
+        if (task.contains("open photos") || task.contains("open gallery")) {
+            openGallery();
+        }
+
+
         if (task.contains("call")) {
 
             String inputContactName = task.replace("call", "").trim().toLowerCase();
@@ -57,6 +81,83 @@ public class TaskExecution {
             context.startActivity(intent);
         }
     }
+
+
+    public void openSpotify() {
+        String spPackage = "com.google.android.spotify";
+        String spUrl = "https://www.spotify.com/";
+        open(spPackage, spUrl);
+    }
+    private void openCalculator() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_APP_CALCULATOR);
+        context.startActivity(intent);
+    }
+
+    private void openContacts() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_APP_CONTACTS);
+        context.startActivity(intent);
+    }
+    private void openEmails() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+        context.startActivity(intent);
+    }
+    private void openGallery() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_APP_GALLERY);
+        context.startActivity(intent);
+    }
+    private void openMessages() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_APP_MESSAGING);
+        context.startActivity(intent);
+    }
+    private void openMusic() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_APP_MUSIC);
+        context.startActivity(intent);
+    }
+    private void openMaps() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_APP_MAPS);
+        context.startActivity(intent);
+    }
+
+    private void openCalender() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_APP_CALENDAR);
+        context.startActivity(intent);
+    }
+    public void openYouTube() {
+        String youtubePackage = "com.google.android.youtube";
+        String youtubeUrl = "https://www.youtube.com/";
+        open(youtubePackage, youtubeUrl);
+    }
+
+
+
+    public void open(String packageName, String url) {
+        if (isAppInstalled(packageName)) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            intent.setPackage(packageName);
+            context.startActivity(intent);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            context.startActivity(intent);
+        }
+    }
+
+
     public List<String> fetchAndCleanContactNames() {
         List<String> cleanedContactNames = new ArrayList<>();
 
@@ -142,51 +243,14 @@ public class TaskExecution {
         }
     }
 
-
-
     public void call2(String phoneNumber)
     {
 
-            Uri number = Uri.parse("tel:" + phoneNumber);
-            Toast.makeText(context, "Contact "+phoneNumber+" found", Toast.LENGTH_SHORT).show();
-            Intent callIntent = new Intent(Intent.ACTION_CALL, number);
-            context.startActivity(callIntent);
+        Uri number = Uri.parse("tel:" + phoneNumber);
+        Toast.makeText(context, "Contact "+phoneNumber+" found", Toast.LENGTH_SHORT).show();
+        Intent callIntent = new Intent(Intent.ACTION_CALL, number);
+        context.startActivity(callIntent);
     }
-
-    public void openSpotify() {
-        String spPackage = "com.google.android.spotify";
-        String spUrl = "https://www.spotify.com/";
-        open(spPackage, spUrl);
-    }
-
-    public void openYouTube() {
-        String youtubePackage = "com.google.android.youtube";
-        String youtubeUrl = "https://www.youtube.com/";
-        open(youtubePackage, youtubeUrl);
-    }
-
-    public void openCalender()
-    {
-        String calenderPackage ="com.android.calendar";
-        Intent intent = context.getPackageManager().getLaunchIntentForPackage(calenderPackage);
-        if (intent != null) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-        }
-    }
-
-
-    public void open(String packageName, String url) {
-        if (isAppInstalled(packageName)) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            intent.setPackage(packageName);
-            context.startActivity(intent);
-        } else {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            context.startActivity(intent);
-        }
-    }
-
     public boolean isAppInstalled(String packageName) {
         PackageManager pm = context.getPackageManager();
         Intent intent = pm.getLaunchIntentForPackage(packageName);
