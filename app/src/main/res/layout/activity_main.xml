@@ -7,8 +7,26 @@
     android:background="@color/black"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    >
 
+    <ImageButton
+        android:id="@+id/mic_speak_iv"
+        android:layout_width="162dp"
+        android:layout_height="122dp"
+        android:layout_gravity="center"
+        android:background="?android:attr/selectableItemBackground"
+        android:elevation="4dp"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/mic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.875"
+        app:tint="@color/white" />
 
     <TextView
         android:id="@+id/jaaduResponce"
@@ -29,9 +47,9 @@
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageView"
-        android:layout_width="278dp"
-        android:layout_height="309dp"
-        android:src="@drawable/movement"
+        android:layout_width="219dp"
+        android:layout_height="220dp"
+        android:src="@drawable/jaadubg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -39,17 +57,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.473" />
 
-    <ImageView
-        android:id="@+id/mic_speak_iv"
-        android:layout_width="106dp"
-        android:layout_height="61dp"
-        android:src="@drawable/mic_img"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.892"
-        app:tint="@color/white" />
+\
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

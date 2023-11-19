@@ -1,6 +1,7 @@
 package com.example.jaadu;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -65,13 +66,11 @@ public class MainActivity extends AppCompatActivity {
         micIV = findViewById(R.id.mic_speak_iv);
 
         micIV.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.mic_disabled_color));
-//        jaaduResponse = new TextView(MainActivity.this);
-//        userInput = findViewById(R.id.userInput);
+
         jaaduResponse = findViewById(R.id.jaaduResponce);
 
-//        bgVideo = findViewById(R.id.videoView2);
-//        bgVideo.setVideoPath("android.resource://"+getPackageName()+"/" + R.raw.movement2);
-//        bgVideo.start();
+        ObjectAnimator animator = ObjectAnimator.ofFloat(jaaduResponse, "translationX", -500f, 0f);
+        animator.setDuration(2000);
 
         micIV.setOnClickListener(view -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -89,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
                     String welcomeMessage = "Welcome Human!";
                     textToSpeech.speak(welcomeMessage, TextToSpeech.QUEUE_FLUSH, null);
                     jaaduResponse.setText(welcomeMessage);
+                    ObjectAnimator animator = ObjectAnimator.ofFloat(jaaduResponse, "translationX", -500f, 0f);
+                    animator.setDuration(2000);
+                    animator.start();
                 }
             }
         });
@@ -139,9 +141,12 @@ public class MainActivity extends AppCompatActivity {
                     tsk.performTasks(result.get(0));
                     response = rsp.responce(result.get(0));
                     textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
-                    jaaduResponse.setAlpha(0f);
+//                    jaaduResponse.setAlpha(0f);
                     jaaduResponse.setText(response);
-                    jaaduResponse.animate().alpha(1f).setDuration(1500);
+                    ObjectAnimator animator = ObjectAnimator.ofFloat(jaaduResponse, "translationX", -500f, 0f);
+                    animator.setDuration(2000);
+                    animator.start();
+//                    jaaduResponse.animate().alpha(1f).setDuration(1500);
 
 
                 }
@@ -189,4 +194,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 }

@@ -25,6 +25,27 @@ public class Responcegeneration {
         if (input.contains("open calendar")) {
             return "opening calendar";
         }
+        if (input.contains("open calculator")) {
+            return "opening calculator";
+        }
+        if (input.contains("open contacts")) {
+            return "opening contacts";
+        }
+        if (input.contains("open email")) {
+            return "opening email";
+        }
+        if (input.contains("open music")) {
+            return "opening music";
+        }
+        if (input.contains("open messages")) {
+            return "opening messages";
+        }
+        if (input.contains("open maps")) {
+            return "opening maps";
+        }
+        if (input.contains("open photos") || input.contains("open gallery")) {
+            return "opening photos";
+        }
         if(input.contains("open your settings"))
         {
             return "opening my settings";
