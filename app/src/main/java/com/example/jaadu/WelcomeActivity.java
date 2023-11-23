@@ -31,7 +31,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
     }
     private void openMain(){
-        Intent intent = new Intent(this,LoginActivity.class);
+        Intent intent = new Intent(this,MainActivity.class);
+        this.finish();
         this.startActivity(intent);
     }
 }

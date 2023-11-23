@@ -10,6 +10,15 @@
     tools:context=".MainActivity">
 
     <ImageView
+        android:id="@+id/welcomeImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ffbg"
+        tools:layout_editor_absoluteX="-36dp"
+        tools:layout_editor_absoluteY="-16dp" />
+
+    <ImageView
         android:id="@+id/profile"
         android:layout_width="50dp"
         android:layout_height="49dp"
@@ -32,10 +41,9 @@
         android:src="@drawable/mic_img"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.875"
+        app:layout_constraintVertical_bias="0.925"
         app:tint="@color/white" />
 
     <TextView
