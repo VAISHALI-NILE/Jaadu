@@ -6,19 +6,25 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
+import android.os.AsyncTask;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.SearchListResponse;
+import com.google.api.services.youtube.model.SearchResult;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 public class TaskExecution {
     private Context context;
+    public String vName;
     private Responcegeneration res = new Responcegeneration(this.context);
 
     public TaskExecution(Context context) {
@@ -28,6 +34,10 @@ public class TaskExecution {
     @SuppressLint("ShowToast")
     public void performTasks(String task) {
         task = task.toLowerCase();
+        if(task.contains("play") )
+        {
+            playVideo(task);
+        }
         if (task.contains("open youtube")) {
             openYouTube();
         }
@@ -69,6 +79,58 @@ public class TaskExecution {
             context.startActivity(intent);
         }
     }
+    public void playVideo(String command)
+    {
+        String vName = command.replace("play", "").trim();
+//        String API_KEY = "AIzaSyDlXGT-TJd7X2BxOc13mebd0eLp76kDxU0";
+//        new SearchOnYouTubeTask().execute(vName, API_KEY);
+        Toast.makeText(this.context, vName, Toast.LENGTH_SHORT).show();
+        new FetchTopVideoTask(this.context,vName).execute();
+
+    }
+
+
+
+
+
+//    public void playSong(String command)
+//    {
+//        ConnectionParams connectionParams =
+//                new ConnectionParams.Builder(CLIENT_ID)
+//                        .setRedirectUri(REDIRECT_URI)
+//                        .setJsonMapper(JacksonMapper.create())
+//                        .build();
+//
+//        SpotifyAppRemote.connect(this, connectionParams, connectionListener);
+//
+//
+//        SpotifyAppRemote.connect(this, connectionParams,
+//                new ColorSpace.Connector.ConnectionListener() {
+//
+//                    @Override
+//                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+//                        mSpotifyAppRemote = spotifyAppRemote;
+//                        // Now you can use the SpotifyAppRemote API
+//                        playTrack("spotify:track:your_track_uri");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Throwable throwable) {
+//                        // Handle connection failure
+//                    }
+//                });
+//    }
+//
+//    private void playTrack(String trackUri) {
+//        mSpotifyAppRemote.getPlayerApi().play(trackUri);
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+//    }
+//}
 
     public void call(String contactName) {
         String[] projection = {ContactsContract.CommonDataKinds.Phone.NUMBER};
@@ -189,4 +251,58 @@ public class TaskExecution {
         return intent != null;
     }
 
+}
+@SuppressLint("StaticFieldLeak")
+class FetchTopVideoTask extends AsyncTask<Void, Void, String>  {
+
+    private final Context context;
+    public String vName2 ;
+    public FetchTopVideoTask(Context context,String vName) {
+        vName2 = vName;
+        this.context = context;
+    }
+
+    @Override
+    protected String doInBackground(Void... voids) {
+        try {
+            // Set up the YouTube object to make API requests
+            HttpTransport httpTransport = new NetHttpTransport();
+            JsonFactory jsonFactory = new GsonFactory();
+
+            // Set up the YouTube object to make API requests
+            YouTube.Builder builder = new YouTube.Builder(httpTransport, jsonFactory, null);
+            YouTube youtube = builder.build();
+
+            // Define the API request parameters
+            YouTube.Search.List search = youtube.search().list("id,snippet");
+            search.setKey("AIzaSyDlXGT-TJd7X2BxOc13mebd0eLp76kDxU0");
+            search.setQ(vName2);
+            search.setType("video");
+            search.setMaxResults(1L);
+
+            // Execute the search request
+            SearchListResponse searchResponse = search.execute();
+
+            // Extract the video ID from the search result
+            List<SearchResult> searchResults = searchResponse.getItems();
+            if (searchResults != null && searchResults.size() > 0) {
+                return searchResults.get(0).getId().getVideoId();
+            }
+        } catch (GoogleJsonResponseException e) {
+            // Handle GoogleJsonResponseException, which may contain API error details
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(String videoId) {
+        if (videoId != null) {
+            // Play the topmost video
+            Intent playIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoId));
+            context.startActivity(playIntent);
+        }
+    }
 }

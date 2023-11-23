@@ -16,7 +16,9 @@ plugins {
 android {
     namespace 'com.example.jaadu'
     compileSdk 33
-
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
     defaultConfig {
         applicationId "com.example.jaadu"
         minSdk 19
@@ -54,6 +56,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    implementation 'com.google.http-client:google-http-client-gson:1.39.0'
+    implementation("com.google.apis:google-api-services-youtube:v3-rev222-1.25.0")
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation "com.google.firebase:firebase-auth"
     implementation "com.google.android.gms:play-services-auth:20.7.0"

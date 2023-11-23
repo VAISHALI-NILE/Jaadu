@@ -95,6 +95,10 @@ public class Responcegeneration {
         {
             return "bye,Goodbye! Until we meet again.";
         }
+        if(input.contains("play") )
+        {
+            return "Playing video on Youtube";
+        }
         if(input.contains("call"))
         {
             if(ContactName != null){

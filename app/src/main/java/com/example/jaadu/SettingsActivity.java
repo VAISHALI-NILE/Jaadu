@@ -1,12 +1,11 @@
 package com.example.jaadu;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -23,7 +22,9 @@ public class SettingsActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         String profileImageUrl = account.getPhotoUrl().toString();
         String name = account.getDisplayName();
-
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
         // Assuming you have the profile image URL in a variable named profileImageUrl
         ImageView profileImageView = findViewById(R.id.profileImageView); // Replace with your ImageView ID
         TextView usernameTextView = findViewById(R.id.usernameTextView);
