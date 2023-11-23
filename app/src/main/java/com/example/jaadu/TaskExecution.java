@@ -12,18 +12,20 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskExecution {
     private Context context;
-    private Responcegeneration res = new Responcegeneration();
+    private Responcegeneration res = new Responcegeneration(this.context);
 
     public TaskExecution(Context context) {
         this.context = context;
     }
 
+    @SuppressLint("ShowToast")
     public void performTasks(String task) {
         task = task.toLowerCase();
         if (task.contains("open youtube")) {
@@ -57,23 +59,9 @@ public class TaskExecution {
         if (task.contains("open photos") || task.contains("open gallery")) {
             openGallery();
         }
-
-
         if (task.contains("call")) {
-
-            String inputContactName = task.replace("call", "").trim().toLowerCase();
-            res.calling(null,inputContactName);
-
-            // Fetch and clean contact names
-            List<String> contactNames = fetchAndCleanContactNames();
-
-            // Compare the cleaned input contact name with cleaned contact names
-            if (findContactName(inputContactName, contactNames)) {
-                res.calling(inputContactName,null);
-                call(inputContactName);
-            } else {
-                Toast.makeText(context, "Contact not found: " + inputContactName, Toast.LENGTH_SHORT).show();
-            }
+            String contactName = task.replace("call", "").trim();
+            call(contactName);
         }
         if(task.contains("open your settings"))
         {
@@ -82,6 +70,44 @@ public class TaskExecution {
         }
     }
 
+    public void call(String contactName) {
+        String[] projection = {ContactsContract.CommonDataKinds.Phone.NUMBER};
+        String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ?";
+        String[] selectionArgs = {contactName};
+        String sortOrder = null;
+
+        Cursor cursor = context.getContentResolver().query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                projection,
+                selection,
+                selectionArgs,
+                sortOrder
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int phoneNumberColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            String phoneNumber = cursor.getString(phoneNumberColumnIndex);
+            cursor.close();
+
+            if (phoneNumber != null && !phoneNumber.isEmpty()) {
+                Toast.makeText(context, "Phone number: " + phoneNumber, Toast.LENGTH_SHORT).show();
+                call2(phoneNumber);
+            } else {
+                Toast.makeText(context, "Phone number not found for " + contactName, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(context, "Contact not found: " + contactName, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void call2(String phoneNumber)
+    {
+
+        Uri number = Uri.parse("tel:" + phoneNumber);
+        Toast.makeText(context, "Contact "+phoneNumber+" found", Toast.LENGTH_SHORT).show();
+        Intent callIntent = new Intent(Intent.ACTION_CALL, number);
+        context.startActivity(callIntent);
+    }
 
     public void openSpotify() {
         String spPackage = "com.google.android.spotify";
@@ -157,108 +183,10 @@ public class TaskExecution {
         }
     }
 
-
-    public List<String> fetchAndCleanContactNames() {
-        List<String> cleanedContactNames = new ArrayList<>();
-
-        String[] projection = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
-        String sortOrder = null;
-
-        Cursor cursor = context.getContentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                projection,
-                null,
-                null,
-                sortOrder
-        );
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                @SuppressLint("Range") String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String cleanedContactName = preprocessContactName(contactName);
-                cleanedContactNames.add(cleanedContactName);
-                Log.d("ContactNames", cleanedContactName);
-            }
-
-            cursor.close();
-        }
-
-        return cleanedContactNames;
-    }
-
-    private String preprocessContactName(String contactName) {
-        if (contactName == null) {
-            return "";
-        }
-
-        // Remove symbols and emojis
-        String cleanedName = contactName.replaceAll("[^a-zA-Z0-9\\s]", "");
-
-        // Convert to lowercase
-        cleanedName = cleanedName.toLowerCase();
-
-        return cleanedName;
-    }
-
-    public boolean findContactName(String inputContactName, @NonNull List<String> contactNames) {
-        // Clean the input contact name
-        String cleanedInputContactName = preprocessContactName(inputContactName);
-
-        // Compare the cleaned input contact name with cleaned contact names (case-insensitive)
-        for (String cleanedContactName : contactNames) {
-            if (cleanedContactName.equals(cleanedInputContactName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void call(String inputContactName) {
-        // Retrieve the original contact name from the contact list
-        String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ?";
-        String[] selectionArgs = {inputContactName};
-        String sortOrder = null;
-
-        Cursor cursor = context.getContentResolver().query(
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                null,
-                selection,
-                selectionArgs,
-                sortOrder
-        );
-
-        if (cursor != null && cursor.moveToFirst()) {
-            int phoneNumberColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-            String phoneNumber = cursor.getString(phoneNumberColumnIndex);
-            cursor.close();
-
-            if (phoneNumber != null && !phoneNumber.isEmpty()) {
-                Toast.makeText(context, "Phone number: " + phoneNumber, Toast.LENGTH_SHORT).show();
-                call2(phoneNumber);
-            } else {
-                Toast.makeText(context, "Phone number not found for " + inputContactName, Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(context, "Contact not found: " + inputContactName, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void call2(String phoneNumber)
-    {
-
-        Uri number = Uri.parse("tel:" + phoneNumber);
-        Toast.makeText(context, "Contact "+phoneNumber+" found", Toast.LENGTH_SHORT).show();
-        Intent callIntent = new Intent(Intent.ACTION_CALL, number);
-        context.startActivity(callIntent);
-    }
     public boolean isAppInstalled(String packageName) {
         PackageManager pm = context.getPackageManager();
         Intent intent = pm.getLaunchIntentForPackage(packageName);
         return intent != null;
     }
 
-    private String getContactPhoneNumber(String contactName) {
-
-        return null;
-    }
 }

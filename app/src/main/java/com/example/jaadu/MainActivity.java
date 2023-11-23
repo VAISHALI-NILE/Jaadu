@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     String response ;
     private VideoView bgVideo;
     private TaskExecution tsk = new TaskExecution(this);
-    private Responcegeneration rsp = new Responcegeneration();
+    private Responcegeneration rsp = new Responcegeneration(this);
     public static boolean calling_flag = false;
 
     @SuppressLint("MissingInflatedId")
@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-
         micIV = findViewById(R.id.mic_speak_iv);
 
         micIV.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.mic_disabled_color));
@@ -73,11 +72,7 @@ public class MainActivity extends AppCompatActivity {
         animator.setDuration(2000);
 
         micIV.setOnClickListener(view -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                checkAudioPermission();
-            }
-            micIV.setColorFilter(ContextCompat.getColor(this, R.color.mic_enabled_color)); // #FF0E87E7
-            startSpeechToText();
+            listen();
         });
 
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -95,7 +90,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    public Void listen()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkAudioPermission();
+        }
+        micIV.setColorFilter(ContextCompat.getColor(this, R.color.mic_enabled_color)); // #FF0E87E7
+        startSpeechToText();
+        return null;
+    }
     private void startSpeechToText() {
         SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
