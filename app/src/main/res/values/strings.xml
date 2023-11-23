@@ -19,4 +19,91 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="default_web_client_id">1065938727958-d6q5ogl2kukiaaqdvmog19oaec7k8mbj.apps.googleusercontent.com</string>
+
+    <string name="terms_and_conditions_text">
+    <![CDATA[
+    Terms and Conditions
+
+1. Acceptance of Terms
+
+By accessing or using the JAADU mobile application (the "App"), you agree to comply with and be bound by these Terms and Conditions. If you do not agree with any part of these Terms and Conditions, you must not use the App.
+
+2. Use of the App
+
+a. You are responsible for maintaining the confidentiality of your account and password.
+
+3. User Content
+
+a. You retain ownership of any content you submit to the App.
+b. By submitting User Content, you grant Jaadu a worldwide, non-exclusive, royalty-free, transferable license to use, reproduce, distribute, display, and perform the User Content.
+
+4. Intellectual Property
+
+a. The App and its original content, features, and functionality are owned by Jaadu and are protected by international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.
+
+
+6. Disclaimer
+
+a. The App is provided "as is" without any warranties, expressed or implied. Jaddu makes no representations or warranties regarding the accuracy, functionality, or performance of the App.
+
+7. Limitation of Liability
+
+a. In no event shall Jaadu be liable for any indirect, incidental, special, consequential, or punitive damages.
+
+8. Governing Law
+
+a. These Terms and Conditions shall be governed by and construed in accordance with the laws of Jaadu.
+
+9. Changes to Terms
+
+a. Jaddu reserves the right to modify or replace these Terms and Conditions at any time.
+
+10. Contact Us
+
+a. If you have any questions about these Terms and Conditions, please contact us at [vaishalinile896@email.com].
+    ]]>
+</string>
+
+    <string name="about_us_text">
+    <![CDATA[
+        About Us: Vaishali, Nile, and Manisha - Student Developers
+
+        Welcome to our world of innovation and creativity! We are Vaishali Kirtikumar Nile and Manisha Pendharkar, a dynamic team of student developers passionate about technology and committed to pushing the boundaries of what\'s possible.
+
+        Vaishali Kirtikumar Nile
+
+        Computer Science Enthusiast | Aspiring Software Engineer
+
+        Vaishali is a dedicated computer science student with a knack for problem-solving and a passion for creating meaningful software solutions. From coding algorithms to developing user-friendly applications, Vaishali brings a unique blend of technical skills and creativity to the team. Always up for a coding challenge, she believes in the power of technology to transform ideas into reality.
+
+        Manisha Pendharkar
+
+        Computer Engineering Enthusiast | UX/UI Design Aficionado
+
+        Manisha is an aspiring computer engineering student with a keen eye for design and a love for creating intuitive user experiences. Her skills extend from wireframing and prototyping to crafting visually appealing interfaces. Manisha understands the importance of user-centric design and strives to make technology accessible and enjoyable for everyone.
+
+        Our Journey as Student Developers
+
+        Our journey began in the world of academia, where we found a shared interest in utilizing technology to address real-world challenges. Collaborating on various projects, we discovered the power of teamwork, innovation, and continuous learning. Whether it\'s developing mobile apps, designing user interfaces, or diving into the latest technologies, we embrace every opportunity to enhance our skills and contribute to the ever-evolving tech landscape.
+
+        Why Choose Us?
+
+        Passion for Excellence: We are driven by a passion for excellence, continuously seeking ways to improve and innovate.
+
+        Diverse Skill Set: With a blend of coding expertise and design flair, we bring a diverse skill set to tackle multifaceted projects.
+
+        Collaborative Approach: We believe in the strength of collaboration and value the insights and contributions of every team member.
+
+        Future-Forward Vision: Keeping pace with emerging technologies, we strive to create solutions that stand the test of time.
+
+        Connect with Us
+
+        We are always excited to connect with fellow tech enthusiasts, collaborators, and mentors. Whether you have a project idea, want to discuss the latest tech trends, or simply share your experiences, feel free to reach out.
+
+        Connect with us on LinkedIn: Vaishali Kirtikumar Nile, Manisha Pendharkar
+
+        Let\'s build, innovate, and inspire together!
+    ]]>
+</string>
+
 </resources>
