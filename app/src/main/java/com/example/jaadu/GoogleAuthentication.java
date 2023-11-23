@@ -55,13 +55,12 @@ public class GoogleAuthentication extends AppCompatActivity {
             startActivity(new Intent(GoogleAuthentication.this, MainActivity.class));
             finish(); // Close the current activity to prevent going back to the sign-in screen
         }
-        else {
-
+        else
+        {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
                     .requestEmail()
                     .build();
-
 
             client = GoogleSignIn.getClient(this, gso);
 
