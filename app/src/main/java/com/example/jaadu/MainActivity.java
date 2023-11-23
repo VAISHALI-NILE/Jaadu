@@ -30,6 +30,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -59,6 +64,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ImageView prf = findViewById(R.id.profile); // Replace with your ImageView ID
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        String profileImageUrl = account.getPhotoUrl().toString();
+
+        Glide.with(this)
+                .load(profileImageUrl)
+                .centerCrop()
+                .apply(RequestOptions.circleCropTransform())
+                .placeholder(R.drawable.profile_placeholder) // Optional placeholder image while loading
+                .into(prf);
+
+
+        prf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(i);
+            }
+        });
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);

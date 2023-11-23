@@ -29,12 +29,14 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+        <activity android:name=".WelcomeActivity"
+            android:exported="false"/>
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".GoogleAuthentication"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,7 +58,6 @@
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>
