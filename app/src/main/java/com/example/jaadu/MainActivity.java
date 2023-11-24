@@ -110,8 +110,6 @@ public class MainActivity extends AppCompatActivity {
             public void onInit(int i) {
                 if (i != TextToSpeech.ERROR) {
                     textToSpeech.setLanguage(Locale.UK);
-
-                    if (!welcomeMessageDisplayed) {
                         String welcomeMessage = "Welcome Human!";
                         textToSpeech.speak(welcomeMessage, TextToSpeech.QUEUE_FLUSH, null);
 //                        jaaduResponse.setText(welcomeMessage);
@@ -119,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 //                        ObjectAnimator animator = ObjectAnimator.ofFloat(jaaduResponse, "translationX", -500f, 0f);
 //                        animator.setDuration(2000);
 //                        animator.start();
-                    }
+
                 }
             }
         });

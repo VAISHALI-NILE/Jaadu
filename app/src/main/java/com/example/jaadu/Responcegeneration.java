@@ -77,7 +77,7 @@ public class Responcegeneration {
         }
         if(input.contains("can you predict the future"))
         {
-            return "The future is as mysterious as a black hole! But let me try – I predict more adventures, laughter, and a cosmic bond between us.";
+            return "The future is as mysterious as a black hole! But let me try \nI predict more adventures, laughter, and a cosmic bond between us.";
         }
         if(input.contains("sing a song"))
         {
