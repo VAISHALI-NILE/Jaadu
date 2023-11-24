@@ -7,7 +7,7 @@ import android.net.Uri;
 
 public class Responcegeneration {
     private Context context;
-    public String ContactName = null;
+    public static String ContactName = null;
     public String inputcnt = null;
     public Responcegeneration(Context context)
     {
@@ -20,7 +20,7 @@ public class Responcegeneration {
         {
             return "Hello human how can I help you";
         }
-        if(input.contains("hi") )
+        if(input.contains("hii") )
         {
             return "Hello there! What brings you here";
         }
@@ -99,6 +99,12 @@ public class Responcegeneration {
         {
             return "Playing video on Youtube";
         }
+        if (input.contains("set timer for")) {
+            return "Setting timer";
+        }
+        if (input.contains("set alarm for")) {
+            return "Setting alarm";
+        }
         if(input.contains("call"))
         {
             if(ContactName != null){
@@ -125,9 +131,9 @@ public class Responcegeneration {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(searchUrl));
         context.startActivity(intent);
     }
-    public void calling(String c,String in)
+    public void calling(String c)
     {
         ContactName = c;
-        inputcnt = in;
+//        inputcnt = in;
     }
 }

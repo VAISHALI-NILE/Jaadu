@@ -1,5 +1,6 @@
 package com.example.jaadu;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -41,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
         usernameTextView.setText(name);
 
         // Find the sign-out button
-        Button signOutButton = findViewById(R.id.signOutButton);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button signOutButton = findViewById(R.id.signOutButton);
 
         // Set onClickListener to the sign-out button
         signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        Button terms = findViewById(R.id.TandC);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button terms = findViewById(R.id.TandC);
         terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
-        Button about = findViewById(R.id.aboutus);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button about = findViewById(R.id.aboutus);
         about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

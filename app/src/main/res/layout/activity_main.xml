@@ -22,12 +22,14 @@
         android:id="@+id/profile"
         android:layout_width="50dp"
         android:layout_height="49dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="36dp"
         android:background="@drawable/profile_bg"
         android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/welcomeImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.892"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.051" />
 
     <ImageButton
         android:id="@+id/mic_speak_iv"
@@ -46,22 +48,15 @@
         app:layout_constraintVertical_bias="0.925"
         app:tint="@color/white" />
 
-    <TextView
+    <TextSwitcher
         android:id="@+id/jaaduResponce"
-        android:layout_width="291dp"
-        android:layout_height="75dp"
-        android:fontFamily="monospace"
-        android:gravity="left"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="20dp"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.575"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.562" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/mic_speak_iv"
+        app:layout_constraintEnd_toEndOf="@+id/welcomeImage"
+        app:layout_constraintStart_toStartOf="@+id/welcomeImage"
+        app:layout_constraintTop_toBottomOf="@+id/gifImageView"
+        tools:ignore="MissingConstraints"/>
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageView"
