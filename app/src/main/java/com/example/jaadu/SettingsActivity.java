@@ -26,17 +26,18 @@ public class SettingsActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         String profileImageUrl = account.getPhotoUrl().toString();
         String name = account.getDisplayName();
+
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-        // Assuming you have the profile image URL in a variable named profileImageUrl
-        ImageView profileImageView = findViewById(R.id.profileImageView); // Replace with your ImageView ID
+
+        ImageView profileImageView = findViewById(R.id.profileImageView);
         TextView usernameTextView = findViewById(R.id.usernameTextView);
         Glide.with(this)
                 .load(profileImageUrl)
                 .centerCrop()
                 .apply(RequestOptions.circleCropTransform())
-                .placeholder(R.drawable.profile_placeholder) // Placeholder image while loading (optional)
+                .placeholder(R.drawable.profile_placeholder)
                 .into(profileImageView);
 
         usernameTextView.setText(name);
@@ -44,7 +45,6 @@ public class SettingsActivity extends AppCompatActivity {
         // Find the sign-out button
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) Button signOutButton = findViewById(R.id.signOutButton);
 
-        // Set onClickListener to the sign-out button
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,14 +71,13 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
-    // Function to handle sign-out
+
     private void signOut() {
         FirebaseAuth.getInstance().signOut();
-        // Redirect to the GoogleAuthentication or another appropriate screen after sign-out
-        // For example, go back to the login screen
+
         Intent intent = new Intent(SettingsActivity.this, GoogleAuthentication.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish(); // Finish the current activity to prevent going back with back button
+        finish();
     }
 }

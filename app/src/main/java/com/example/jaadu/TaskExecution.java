@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.AlarmClock;
-import android.provider.CalendarContract;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ import com.google.api.services.youtube.model.SearchResult;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class TaskExecution {
@@ -45,6 +43,12 @@ public class TaskExecution {
         }
         if (task.contains("open youtube")) {
             openYouTube();
+        }
+        if (task.contains("open snapchat")) {
+            openSnap();
+        }
+        if (task.contains("open instagram")) {
+            openInsta();
         }
         if (task.contains("open spotify")) {
             openSpotify();
@@ -77,10 +81,8 @@ public class TaskExecution {
         if (task.contains("call")) {
             String inputContactName = task.replace("call", "").trim().toLowerCase();
 
-            // Fetch and clean contact names
             List<String> contactNames = fetchAndCleanContactNames();
             res.calling(inputContactName);
-            // Compare the cleaned input contact name with cleaned contact names
             if (findContactName(inputContactName, contactNames)) {
                 call(inputContactName);
             } else {
@@ -92,7 +94,6 @@ public class TaskExecution {
             context.startActivity(intent);
         }
         if (task.contains("set timer for")) {
-            // Extract time from the command
             String[] words = task.split(" ");
             int minutes = extractMinutes(words);
 
@@ -102,136 +103,18 @@ public class TaskExecution {
         if (task.contains("set alarm for")) {
             int[] time = extractHourAndMinutes(task);
 
-            // Check if the extracted time is valid
             if (time != null && time.length == 2) {
-                // Set the alarm with the extracted hour and minutes
                 setAlarm(time[0], time[1]);
             } else {
-                // Handle the case where the time extraction fails
                 Toast.makeText(context, "Invalid time format", Toast.LENGTH_SHORT).show();
             }
         }
-        if (task.contains("set reminder for")) {
-            ReminderData reminderData = extractReminderData(task);
-
-            // Check if the extracted data is valid
-            if (reminderData != null) {
-                // Set the reminder with the extracted details
-                setReminder(reminderData);
-            } else {
-                // Handle the case where reminder data extraction fails
-                Toast.makeText(context, "Invalid reminder format", Toast.LENGTH_SHORT).show();
-            }
-        }
 
     }
-    // Helper class to store reminder data
-    private static class ReminderData {
-        String details;
-        int day; // day of the month
-        int month; // month (1-12)
-        int year; // year
-        int hour; // hour (0-23)
-        int minute; // minute (0-59)
-    }
 
-    // Helper method to extract reminder data from the voice command
-    // Helper method to extract reminder data from the voice command
-    private ReminderData extractReminderData(String command) {
-        ReminderData reminderData = new ReminderData();
-
-        // Split the command into words
-        String[] words = command.split(" ");
-        for (int i = 0; i < words.length; i++) {
-            if (words[i].equals("for")) {
-                // Extract reminder details
-                StringBuilder reminderDetails = new StringBuilder();
-                for (int j = i + 1; j < words.length; j++) {
-                    // Check if the next word is a time indication like "at"
-                    if (words[j].equalsIgnoreCase("at")) {
-                        // Extract time and date
-                        if (j + 3 < words.length) {
-                            try {
-                                // Extract time
-                                String[] timeParts = words[j + 1].split(":");
-                                reminderData.hour = Integer.parseInt(timeParts[0]);
-                                reminderData.minute = Integer.parseInt(timeParts[1]);
-
-                                // Extract date (assuming "tomorrow" for simplicity)
-                                reminderData.day = getCurrentDay() + 1;
-                                reminderData.month = getCurrentMonth();
-                                reminderData.year = getCurrentYear();
-
-                                // Extract reminder details
-                                for (int k = i + 1; k < j; k++) {
-                                    reminderDetails.append(words[k]).append(" ");
-                                }
-
-                                reminderData.details = reminderDetails.toString().trim();
-                                return reminderData;
-                            } catch (NumberFormatException e) {
-                                // Handle the case where parsing fails
-                                return null;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return null; // Return null if extraction fails
-    }
-
-    // Helper method to get the current day of the month
-    private int getCurrentDay() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.DAY_OF_MONTH);
-    }
-
-    // Helper method to get the current month
-    private int getCurrentMonth() {
-        Calendar calendar = Calendar.getInstance();
-        // Calendar months are 0-based, so add 1 to get the actual month
-        return calendar.get(Calendar.MONTH) + 1;
-    }
-
-    // Helper method to get the current year
-    private int getCurrentYear() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.YEAR);
-    }
-
-    // Helper method to set a reminder
-    private void setReminder(ReminderData reminderData) {
-        try {
-            // Create an intent with the reminder action
-            Intent reminderIntent = new Intent(Intent.ACTION_CREATE_REMINDER);
-
-            // Set reminder details
-            reminderIntent.putExtra(Intent.EXTRA_TEXT, reminderData.details);
-
-            // Set reminder date and time
-            reminderIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
-                    getDateTimeMillis(reminderData.year, reminderData.month, reminderData.day,
-                            reminderData.hour, reminderData.minute));
-
-            // Start the reminder by launching the appropriate app
-            context.startActivity(reminderIntent);
-        } catch (ActivityNotFoundException e) {
-            // Handle the case where the app or reminder functionality is not available
-            Toast.makeText(context, "Reminder app not found or does not support reminders", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    // Helper method to convert date and time to milliseconds
-    private long getDateTimeMillis(int year, int month, int day, int hour, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day, hour, minute);
-        return calendar.getTimeInMillis();
-    }
     private int[] extractHourAndMinutes(String command) {
         int[] time = new int[2];
-        // Split the command into words
+
         String[] words = command.split(" ");
         for (int i = 0; i < words.length; i++) {
             if (words[i].equals("for")) {
@@ -251,7 +134,7 @@ public class TaskExecution {
                 break;
             }
         }
-        return null; // Return null if extraction fails
+        return null;
     }
     private int extractMinutes(String[] words) {
         int minutes = 0;
@@ -271,53 +154,42 @@ public class TaskExecution {
     }
     private void startTimer(int minutes) {
         try {
-            // Create an intent with the timer action
             Intent timerIntent = new Intent(AlarmClock.ACTION_SET_TIMER);
 
-            // Set the duration of the timer in seconds
             timerIntent.putExtra(AlarmClock.EXTRA_LENGTH, minutes * 60);
 
-            // Set other optional parameters if needed
             timerIntent.putExtra(AlarmClock.EXTRA_MESSAGE, "Timer message");
             timerIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, false);
 
-            // Start the timer by launching the clock app
             context.startActivity(timerIntent);
         } catch (ActivityNotFoundException e) {
-            // Handle the case where the clock app or timer functionality is not available
+
             Toast.makeText(this.context, "Clock app not found or does not support timers", Toast.LENGTH_SHORT).show();
         }
     }
     private void setAlarm(int hour, int minutes) {
         try {
-            // Create an intent with the alarm action
             Intent alarmIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
 
-            // Set the hour and minute parameters
             alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, hour);
             alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, minutes);
 
-            // Set other optional parameters if needed
             alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, "Alarm message");
             alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, false);
 
-            // Start the alarm by launching the clock app
             context.startActivity(alarmIntent);
         } catch (ActivityNotFoundException e) {
-            // Handle the case where the clock app or alarm functionality is not available
             Toast.makeText(context, "Clock app not found or does not support alarms", Toast.LENGTH_SHORT).show();
         }
     }
     public void playVideo(String command)
     {
         String vName = command.replace("play", "").trim();
-//        String API_KEY = "AIzaSyDlXGT-TJd7X2BxOc13mebd0eLp76kDxU0";
-//        new SearchOnYouTubeTask().execute(vName, API_KEY);
+        vName = vName.replace("on youtube", "").trim();
         Toast.makeText(this.context, vName, Toast.LENGTH_SHORT).show();
         new FetchTopVideoTask(this.context,vName).execute();
 
     }
-
 
 
     public List<String> fetchAndCleanContactNames() {
@@ -348,15 +220,11 @@ public class TaskExecution {
     }
 
     public String preprocessContactName(String contactName) {
-        // Remove symbols and spaces from the contact name and convert to lowercase
         return contactName.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
     }
 
     public boolean findContactName(String inputContactName, List<String> contactNames) {
-        // Clean the input contact name
         String cleanedInputContactName = preprocessContactName(inputContactName);
-
-        // Compare the cleaned input contact name with cleaned contact names (case-insensitive)
         for (String cleanedContactName : contactNames) {
             if (cleanedContactName.equals(cleanedInputContactName)) {
                 return true;
@@ -366,7 +234,6 @@ public class TaskExecution {
     }
 
     public void call(String inputContactName) {
-        // Retrieve the original contact name from the contact list
         String selection = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " = ?";
         String[] selectionArgs = {inputContactName};
         String sortOrder = null;
@@ -408,6 +275,16 @@ public class TaskExecution {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
         context.startActivity(intent);
+    }
+    public void openSnap() {
+        String spPackage = "com.google.android.snapchat";
+        String spUrl = "https://www.snapchat.com/";
+        open(spPackage, spUrl);
+    }
+    public void openInsta() {
+        String spPackage = "com.google.android.instagram";
+        String spUrl = "https://www.instagram.com/";
+        open(spPackage, spUrl);
     }
     public void openSpotify() {
         String spPackage = "com.google.android.spotify";
@@ -503,7 +380,6 @@ class FetchTopVideoTask extends AsyncTask<Void, Void, String>  {
     @Override
     protected String doInBackground(Void... voids) {
         try {
-            // Set up the YouTube object to make API requests
             HttpTransport httpTransport = new NetHttpTransport();
             JsonFactory jsonFactory = new GsonFactory();
 
@@ -527,7 +403,6 @@ class FetchTopVideoTask extends AsyncTask<Void, Void, String>  {
                 return searchResults.get(0).getId().getVideoId();
             }
         } catch (GoogleJsonResponseException e) {
-            // Handle GoogleJsonResponseException, which may contain API error details
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

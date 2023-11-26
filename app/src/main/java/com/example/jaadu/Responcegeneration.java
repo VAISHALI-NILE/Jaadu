@@ -81,9 +81,24 @@ public class Responcegeneration {
         }
         if(input.contains("sing a song"))
         {
-            return "Sure thing! Buckle up, Earthling, as we embark on a musical journey through the cosmos. Playing some stellar tunes now!";
+            return "Sure thing! Let's sing \n You should take it as a compliment\n" +
+                    "That I got drunk and made fun of the way you talk\n" +
+                    "You should think about the consequence\n" +
+                    "Of your magnetic field being a little too strong\n" +
+                    "And I got a boyfriend, he's older than us\n" +
+                    "He's in the club doing, I don't know what\n" +
+                    "You're so cool, it makes me hate you so much (I hate you so much)\n" +
+                    "Whisky on ice, Sunset and Vine\n" +
+                    "You've ruined my life, by not being mine\n" +
+                    "You're so gorgeous\n" +
+                    "I can't say anything to your face\n" +
+                    "'Cause look at your face (gorgeous)\n" +
+                    "And I'm so furious\n" +
+                    "At you for making me feel this way\n" +
+                    "But what can I say?\n" +
+                    "You're gorgeous";
         }
-        if(input.contains("what is your favorite food"))
+        if(input.contains("what is your favorite food") | input.contains("what food you like")| input.contains("what you like to eat"))
         {
             return "Oh, I'm fascinated by popcorn! The way it pops is like a tiny, edible supernova. A delightful treat during my movie nights on Earth.";
         }
@@ -91,11 +106,27 @@ public class Responcegeneration {
         {
             return "Ah, the eternal question! The meaning of life is like an intergalactic dance – full of twists, turns, and a sprinkle of stardust. It's a journey of discovery!";
         }
+        if (input.contains("who is your developer") | input.contains("who is your developer"))
+        {
+            return "The great Vaishali Nile";
+        }
+        if(input.contains("who is your friend"))
+        {
+            return "Vaishali Nile is my only friend  so i don't need any one";
+        }
+        if(input.contains("do you like to dance"))
+        {
+            return "yes.. Will you give me the pleasure to dance with you";
+        }
         if (input.contains("bye"))
         {
             return "bye,Goodbye! Until we meet again.";
         }
-        if(input.contains("play") )
+        if (input.contains("good night"))
+        {
+            return "You to have a Good night and Sleep tight";
+        }
+        if(input.contains("play") && input.contains("on youtube") )
         {
             return "Playing video on Youtube";
         }
@@ -104,6 +135,9 @@ public class Responcegeneration {
         }
         if (input.contains("set alarm for")) {
             return "Setting alarm";
+        }
+        if (input.contains("do you want to become friends") | input.contains("will you be my friend")) {
+            return "I don't mind but my developer is bit possessive so u gota deal with it....hmmm";
         }
         if(input.contains("call"))
         {
@@ -124,6 +158,7 @@ public class Responcegeneration {
         }
         else {
             return "my developer didn't teach me this one";
+            //return "Think and ask again ... be mature";
         }
     }
     private void performGoogleSearch(String searchQuery) {

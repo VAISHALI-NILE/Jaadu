@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             textView.setTextSize(22);
             return textView;});
 
-        ImageView prf = findViewById(R.id.profile); // Replace with your ImageView ID
+        ImageView prf = findViewById(R.id.profile);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         String profileImageUrl = account.getPhotoUrl().toString();
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onInit(int i) {
                 if (i != TextToSpeech.ERROR) {
-                    textToSpeech.setLanguage(Locale.UK);
+                    textToSpeech.setLanguage(Locale.US);
                         String welcomeMessage = "Welcome Human!";
                         textToSpeech.speak(welcomeMessage, TextToSpeech.QUEUE_FLUSH, null);
 //                        jaaduResponse.setText(welcomeMessage);
@@ -180,6 +180,10 @@ public class MainActivity extends AppCompatActivity {
                     response = rsp.responce(result.get(0));
                     textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
                     String[] res = response.split("");
+                    if(result.get(0).contains("bye"))
+                    {
+                        System.exit(0);
+                    }
 
 //                    textSwitcher.setInAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in));
 //                    textSwitcher.setOutAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out));

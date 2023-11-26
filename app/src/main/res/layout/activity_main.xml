@@ -56,7 +56,9 @@
         app:layout_constraintEnd_toEndOf="@+id/welcomeImage"
         app:layout_constraintStart_toStartOf="@+id/welcomeImage"
         app:layout_constraintTop_toBottomOf="@+id/gifImageView"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageView"

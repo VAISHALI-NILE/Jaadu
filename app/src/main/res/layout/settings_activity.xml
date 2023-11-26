@@ -82,7 +82,7 @@
         android:layout_height="120dp"
         android:background="@drawable/settingsbuttonsbg"
         android:padding="15dp"
-        android:text="Voices"
+        android:text="Sign Out"
 
         android:textColor="@color/white"
         android:textSize="15dp"
@@ -130,7 +130,7 @@
         android:layout_height="120dp"
         android:background="@drawable/settingsbuttonsbg"
         android:padding="15dp"
-        android:text="Sign Out"
+        android:text="Voices"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
